@@ -1,4 +1,5 @@
 require 'sinatra'
+require 'base64'
 
 set :bind, '0.0.0.0'
 
@@ -12,7 +13,9 @@ post '/' do
     logger.info "no body"
     return "no body"
   end
-  data = JSON.parse request.body.read
-  logger.info "#{data}"
-  "Hello #{data}!\n"
+  json = JSON.parse(request.body.read)
+  data = json["message"]["data"]
+  decoded_data = Base64.decode64(data)
+  logger.info "#{decoded_data}"
+  "Hello #{decoded_data}!\n"
 end
