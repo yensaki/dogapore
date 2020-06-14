@@ -27,11 +27,10 @@ post '/' do
   filepath = "/tmp/#{file.name}"
   file.download(filepath)
 
-  dest_dir = "/tmp/images"
-  FileUtils.mkdir_p(dest_dir)
-  logger.info dest_dir
-
+  logger.info  File.size(filepath)
   picking_movie = CherryPickingMoments.movie(filepath)
+
+  logger.info "#{picking_movie.images.size}"
 
   picking_movie.images.each.with_index(1) do |image, index|
     File.open(image.filepath) do |file|
