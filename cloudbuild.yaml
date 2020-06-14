@@ -1,0 +1,17 @@
+steps:
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["build", "-t", "gcr.io/saki-185412/dogapore:$SHORT_SHA", "."]
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["push", "gcr.io/saki-185412/dogapore:$SHORT_SHA"]
+#  - name: 'gcr.io/cloud-builders/gcloud'
+#    args:
+#      - 'run'
+#      - 'deploy'
+#      - 'dogapore'
+#      - '--image'
+#      - 'gcr.io/saki-185412/dogapore:$SHORT_SHA'
+#      - '--region'
+#      - 'asia-northeast1'
+#      - '--platform'
+#      - 'managed'
+#      - '--allow-unauthenticated'
