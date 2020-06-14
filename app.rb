@@ -16,7 +16,7 @@ post '/' do
   end
   json = JSON.parse(request.body.read)
   data = json["message"]["data"]
-  decoded_data = Base64.decode64(data)
+  decoded_data = JSON.parse(Base64.decode64(data))
   logger.info "#{decoded_data}"
 
   storage = Google::Cloud::Storage.new(project_id: "saki-185412")
