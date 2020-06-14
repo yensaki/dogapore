@@ -9,10 +9,10 @@ end
 post '/' do
   # request.body.rewind
   if request.body.to_s == ""
-    puts "no body"
+    logger.info "no body"
     return "no body"
   end
   data = JSON.parse request.body.read
-  puts "#{data}"
+  logger.info "#{data}"
   "Hello #{data}!\n"
 end
