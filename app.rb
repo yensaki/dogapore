@@ -2,6 +2,7 @@ require 'sinatra'
 require 'base64'
 require 'google/cloud/storage'
 require 'fileutils'
+require 'cherry_picking_moments'
 
 set :bind, '0.0.0.0'
 
