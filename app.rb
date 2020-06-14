@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'base64'
+require 'google/cloud/storage'
 
 set :bind, '0.0.0.0'
 
@@ -17,5 +18,12 @@ post '/' do
   data = json["message"]["data"]
   decoded_data = Base64.decode64(data)
   logger.info "#{decoded_data}"
-  "Hello #{decoded_data}!\n"
+
+  storage = Google::Cloud::Storage.new(project_id: "saki-185412")
+  bucket = storage.bucket("juucy")
+  file = bucket.file(decoded_data["filename"])
+  filepath = "/tmp/#{file.name}"
+  file.download(filepath)
+  logger.info "#{File.size(filepath)}"
+  "Hello #{File.size(filepath)}!\n"
 end
