@@ -1,6 +1,7 @@
 require 'sinatra'
 require 'base64'
 require 'google/cloud/storage'
+require 'fileutils'
 
 set :bind, '0.0.0.0'
 
@@ -24,6 +25,20 @@ post '/' do
   file = bucket.file(decoded_data["filename"])
   filepath = "/tmp/#{file.name}"
   file.download(filepath)
-  logger.info "#{File.size(filepath)}"
-  "Hello #{File.size(filepath)}!\n"
+
+  dest_dir = "/tmp/images"
+  FileUtils.mkdir_p(dest_dir)
+  logger.info dest_dir
+
+  picking_movie = CherryPickingMoments.movie(filepath)
+
+  picking_movie.images.each.with_index(1) do |image, index|
+    File.open(image.filepath) do |file|
+      filename = "#{index}#{File.extname(file)}"
+      bucket.create_file(file, "#{image.following_distance}/#{filename}")
+      logger.info "#{image.following_distance}/#{filename}"
+    end
+  end
+
+  "OK\n"
 end
