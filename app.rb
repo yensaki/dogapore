@@ -35,7 +35,12 @@ post '/' do
   picking_movie.images.each.with_index(1) do |image, index|
     File.open(image.filepath) do |file|
       filename = "#{index}#{File.extname(file)}"
-      bucket.create_file(file, "#{image.following_distance}/#{filename}")
+      filepath = File.join(
+        "sliced/images/",
+        decoded_data["uid"],
+        "#{image.following_distance}/#{filename}"
+      )
+      bucket.create_file(file, filepath)
       logger.info "#{image.following_distance}/#{filename}"
     end
   end
